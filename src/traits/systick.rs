@@ -1,7 +1,6 @@
 use rtic_monotonics::systick::ExtU32;
 
 use crate::FromTime;
-use crate::ToTime;
 
 // todo: incorrectly rust compiler complains about this, so we have to use the fugit types directly
 // error[E0119]: conflicting implementations of trait `from_time::ToTime<u32>`
@@ -32,21 +31,9 @@ impl FromTime<u32> for Duration {
     }
 }
 
-impl ToTime<u32> for Duration {
-    fn to_ms(&self) -> u32 {
-        self.to_millis()
-    }
-}
-
 impl FromTime<u32> for Instant {
     fn from_ms(millis: u32) -> Self {
         Self::from_ticks(millis)
-    }
-}
-
-impl ToTime<u32> for Instant {
-    fn to_ms(&self) -> u32 {
-        self.ticks()
     }
 }
 
