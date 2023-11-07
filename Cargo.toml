@@ -7,3 +7,7 @@ edition = "2021"
 
 [dependencies]
 rtic-monotonics = { version = "1", features = ["cortex-m-systick"] }
+
+[features]
+fugit = []
+systick = []

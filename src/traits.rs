@@ -1,5 +1,3 @@
 mod systick;
 
-pub trait FromTime<U> {
-    fn from_ms(millis: U) -> Self;
-}
+pub trait FromTime<U> {}

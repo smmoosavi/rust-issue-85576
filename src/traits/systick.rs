@@ -19,23 +19,19 @@ type FugitInstant = fugit::TimerInstantU32<TIMER_HZ>;
 #[allow(dead_code)]
 type FugitDuration = fugit::TimerDurationU32<TIMER_HZ>;
 
+#[cfg(feature = "fugit")]
 type Duration = FugitDuration;
+#[cfg(feature = "fugit")]
 type Instant = FugitInstant;
 
-// type Duration = SystickDuration;
-// type Instant = SystickInstant;
+#[cfg(feature = "systick")]
+type Duration = SystickDuration;
+#[cfg(feature = "systick")]
+type Instant = SystickInstant;
 
-impl FromTime<u32> for Duration {
-    fn from_ms(millis: u32) -> Self {
-        millis.millis()
-    }
-}
+impl FromTime<u32> for Duration {}
 
-impl FromTime<u32> for Instant {
-    fn from_ms(millis: u32) -> Self {
-        Self::from_ticks(millis)
-    }
-}
+impl FromTime<u32> for Instant {}
 
 #[cfg(test)]
 mod tests {
