@@ -1,3 +1,4 @@
+workspace = { members = ["other"] }
 [package]
 name = "rust-e0119-bug"
 version = "0.1.0"
@@ -7,9 +8,12 @@ edition = "2021"
 
 [dependencies]
 rtic-monotonics = { version = "1", features = ["cortex-m-systick"] }
+other = { path = "other" }
 
 [features]
 fugit = []
 systick = []
 direct = []
 internal-systick = []
+other-direct = []
+other-systick = []

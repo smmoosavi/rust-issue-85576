@@ -37,6 +37,18 @@ type Duration = <internal::Systick as internal::Monotonic>::Duration;
 #[cfg(feature = "internal-systick")]
 type Instant = <internal::Systick as internal::Monotonic>::Instant;
 
+// direct from other
+#[cfg(feature = "other-direct")]
+type Duration = other::Duration;
+#[cfg(feature = "other-direct")]
+type Instant = other::Instant;
+
+// from other Monotonic
+#[cfg(feature = "other-systick")]
+type Duration = <other::Systick as other::Monotonic>::Duration;
+#[cfg(feature = "other-systick")]
+type Instant = <other::Systick as other::Monotonic>::Instant;
+
 impl FromTime for Duration {}
 
 impl FromTime for Instant {}
