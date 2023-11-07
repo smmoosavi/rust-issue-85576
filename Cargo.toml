@@ -1,8 +1,9 @@
 [package]
-name = "rust-E0119-bug"
+name = "rust-e0119-bug"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+rtic-monotonics = { version = "1", features = ["cortex-m-systick"] }
