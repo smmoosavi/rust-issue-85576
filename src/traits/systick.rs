@@ -1,3 +1,4 @@
+#[allow(unused_imports)]
 use crate::{internal, FromTime};
 
 // todo: incorrectly rust compiler complains about this, so we have to use the fugit types directly
@@ -39,9 +40,9 @@ type Duration = <internal::Systick as internal::Monotonic>::Duration;
 #[cfg(feature = "internal-systick")]
 type Instant = <internal::Systick as internal::Monotonic>::Instant;
 
-impl FromTime<u32> for Duration {}
+impl FromTime for Duration {}
 
-impl FromTime<u32> for Instant {}
+impl FromTime for Instant {}
 
 #[cfg(test)]
 mod tests {
