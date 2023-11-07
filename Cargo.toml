@@ -7,13 +7,10 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rtic-monotonics = { version = "1", features = ["cortex-m-systick"] }
 other = { path = "other" }
 
 [features]
-fugit = []
-systick = []
-direct = []
-internal-systick = []
-other-direct = []
-other-systick = []
+crate-direct=[]
+crate-systick=[]
+other-direct=[]
+other-systick=[]

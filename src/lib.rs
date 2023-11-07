@@ -1,57 +1,52 @@
 mod internal;
+
 pub trait FromTime {}
 
-use rtic_monotonics::systick::Systick;
-use rtic_monotonics::Monotonic;
 #[allow(dead_code)]
-type SystickDuration = <Systick as Monotonic>::Duration;
+type CrateDuration = <internal::Systick as internal::Monotonic>::Duration;
 #[allow(dead_code)]
-type SystickInstant = <Systick as Monotonic>::Instant;
+type CrateInstant = <internal::Systick as internal::Monotonic>::Instant;
 
-use rtic_monotonics::systick::fugit;
-const TIMER_HZ: u32 = 1_000;
 #[allow(dead_code)]
-type FugitInstant = fugit::TimerInstantU32<TIMER_HZ>;
+type OtherDuration = <other::Systick as other::Monotonic>::Duration;
 #[allow(dead_code)]
-type FugitDuration = fugit::TimerDurationU32<TIMER_HZ>;
+type OtherInstant = <other::Systick as other::Monotonic>::Instant;
 
-#[cfg(feature = "fugit")]
-type Duration = FugitDuration;
-#[cfg(feature = "fugit")]
-type Instant = FugitInstant;
+#[cfg(feature = "crate-direct")]
+mod test_crate_direct {
+    use super::*;
 
-#[cfg(feature = "systick")]
-type Duration = SystickDuration;
-#[cfg(feature = "systick")]
-type Instant = SystickInstant;
+    impl FromTime for internal::Duration {}
 
-// direct from internal
-#[cfg(feature = "direct")]
-type Duration = internal::Duration;
-#[cfg(feature = "direct")]
-type Instant = internal::Instant;
+    impl FromTime for internal::Instant {}
+}
 
-// from internal Monotonic
-#[cfg(feature = "internal-systick")]
-type Duration = <internal::Systick as internal::Monotonic>::Duration;
-#[cfg(feature = "internal-systick")]
-type Instant = <internal::Systick as internal::Monotonic>::Instant;
+#[cfg(feature = "crate-systick")]
+mod test_crate_systick {
+    use super::*;
 
-// direct from other
+    impl FromTime for CrateDuration {}
+
+    impl FromTime for CrateInstant {}
+}
+
 #[cfg(feature = "other-direct")]
-type Duration = other::Duration;
-#[cfg(feature = "other-direct")]
-type Instant = other::Instant;
+mod test_other_direct {
+    use super::*;
 
-// from other Monotonic
+    impl FromTime for other::Duration {}
+
+    impl FromTime for other::Instant {}
+}
+
 #[cfg(feature = "other-systick")]
-type Duration = <other::Systick as other::Monotonic>::Duration;
-#[cfg(feature = "other-systick")]
-type Instant = <other::Systick as other::Monotonic>::Instant;
+mod test_other_systick {
+    use super::*;
 
-impl FromTime for Duration {}
+    impl FromTime for OtherDuration {}
 
-impl FromTime for Instant {}
+    impl FromTime for OtherInstant {}
+}
 
 #[cfg(test)]
 mod tests {
@@ -62,15 +57,11 @@ mod tests {
     #[test]
     fn test_type_ids() {
         assert_eq!(
-            TypeId::of::<SystickDuration>(),
-            TypeId::of::<FugitDuration>()
+            TypeId::of::<OtherDuration>(),
+            TypeId::of::<other::Duration>()
         );
-        assert_eq!(TypeId::of::<SystickInstant>(), TypeId::of::<FugitInstant>());
+        assert_eq!(TypeId::of::<OtherInstant>(), TypeId::of::<other::Instant>());
 
-        assert_ne!(
-            TypeId::of::<SystickDuration>(),
-            TypeId::of::<SystickInstant>()
-        );
-        assert_ne!(TypeId::of::<FugitDuration>(), TypeId::of::<FugitInstant>());
+        assert_ne!(TypeId::of::<OtherDuration>(), TypeId::of::<OtherInstant>());
     }
 }
