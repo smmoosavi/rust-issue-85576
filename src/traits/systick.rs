@@ -1,6 +1,4 @@
-use rtic_monotonics::systick::ExtU32;
-
-use crate::FromTime;
+use crate::{internal, FromTime};
 
 // todo: incorrectly rust compiler complains about this, so we have to use the fugit types directly
 // error[E0119]: conflicting implementations of trait `from_time::ToTime<u32>`
@@ -28,6 +26,18 @@ type Instant = FugitInstant;
 type Duration = SystickDuration;
 #[cfg(feature = "systick")]
 type Instant = SystickInstant;
+
+// direct from internal
+#[cfg(feature = "direct")]
+type Duration = internal::Duration;
+#[cfg(feature = "direct")]
+type Instant = internal::Instant;
+
+// from internal Monotonic
+#[cfg(feature = "internal-systick")]
+type Duration = <internal::Systick as internal::Monotonic>::Duration;
+#[cfg(feature = "internal-systick")]
+type Instant = <internal::Systick as internal::Monotonic>::Instant;
 
 impl FromTime<u32> for Duration {}
 
