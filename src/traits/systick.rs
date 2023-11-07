@@ -5,15 +5,16 @@ use crate::ToTime;
 
 // todo: incorrectly rust compiler complains about this, so we have to use the fugit types directly
 // error[E0119]: conflicting implementations of trait `from_time::ToTime<u32>`
-// use rtic_monotonics::systick::Systick;
-// use rtic_monotonics::Monotonic;
-// type Duration = <Systick as Monotonic>::Duration;
-// type Instant = <Systick as Monotonic>::Instant;
 
-use rtic_monotonics::systick::fugit;
-const TIMER_HZ: u32 = 1_000;
-type Instant = fugit::TimerInstantU32<TIMER_HZ>;
-type Duration = fugit::TimerDurationU32<TIMER_HZ>;
+use rtic_monotonics::systick::Systick;
+use rtic_monotonics::Monotonic;
+type Duration = <Systick as Monotonic>::Duration;
+type Instant = <Systick as Monotonic>::Instant;
+
+// use rtic_monotonics::systick::fugit;
+// const TIMER_HZ: u32 = 1_000;
+// type Instant = fugit::TimerInstantU32<TIMER_HZ>;
+// type Duration = fugit::TimerDurationU32<TIMER_HZ>;
 
 impl FromTime<u32> for Duration {
     fn from_ns(nanos: u32) -> Self {
