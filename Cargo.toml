@@ -1,6 +1,6 @@
 workspace = { members = ["other"] }
 [package]
-name = "rust-e0119-bug"
+name = "rust-issue-85576"
 version = "0.1.0"
 edition = "2021"
 
